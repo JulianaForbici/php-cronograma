@@ -12,7 +12,7 @@ class StoreScheduleItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,15 @@ class StoreScheduleItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'schedule_id' => ['required', 'exists:schedules,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+            'status' => ['required', 'string'],
+            'progress' => ['integer', 'min:0', 'max:100'],
+            'responsible_id' => ['nullable', 'exists:users,id'],
+            'position' => ['integer']
         ];
     }
 }
